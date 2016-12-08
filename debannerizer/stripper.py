@@ -1,5 +1,6 @@
 import requests
 import re
+import datetime
 from itertools import islice
 from bs4 import BeautifulSoup
 from collections import namedtuple
@@ -69,7 +70,41 @@ class BannerMeeting:
 
     @location.setter
     def location(self, value):
-        self.building, _, _self.room = value.rpartition(" ")
+        self.building, _, self.room = value.rpartition(" ")
+
+    @property
+    def timerange(self):
+        return (self.start_time, self.end_time)
+
+    @timerange.setter
+    def timerange(self, value):
+        if value == 'TBA':
+            self.start_time, self.end_time = None, None
+            return
+        if isinstance(value, str):
+            self.start_time, self.end_time = (
+                    datetime.datetime.strptime(t, "%I:%M %p").time()
+                    for t in value.split(" - ")
+            )
+        else:
+            self.start_time, self.end_time = value
+
+    @property
+    def daterange(self):
+        return (self.start_date, self.end_date)
+
+    @daterange.setter
+    def daterange(self, value):
+        if value == 'TBA':
+            self.start_date, self.end_date = None, None
+            return
+        if isinstance(value, str):
+            self.start_date, self.end_date = (
+                    datetime.datetime.strptime(d, "%b %d, %Y").date()
+                    for d in value.split(" - ")
+            )
+        else:
+            self.start_date, self.end_date = value
 
 def banner_reader(term):
     listing_post["term_in"] = term
