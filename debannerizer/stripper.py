@@ -71,6 +71,34 @@ class BannerMeeting:
     def location(self, value):
         self.building, _, _self.room = value.rpartition(" ")
 
+    @property
+    def timerange(self):
+        return (self.start_time, self.end_time)
+
+    @timerange.setter
+    def timerange(self, value):
+        if isinstance(value, str):
+            self.start_time, self.end_time = (
+                    datetime.datetime.strptime(t, "%I:%M %p").time()
+                    for t in value.split(" - ")
+            )
+        else:
+            self.start_time, self.end_time = value
+
+    @property
+    def daterange(self):
+        return (self.start_date, self.end_date)
+
+    @daterange.setter
+    def daterange(self, value):
+        if isinstance(value, str):
+            self.start_date, self.end_date = (
+                    datetime.datetime.strptime(d, "%b %d, %Y").date()
+                    for d in value.split(" - ")
+            )
+        else:
+            self.start_date, self.end_date = value
+
 def banner_reader(term):
     listing_post["term_in"] = term
     r = requests.post(listing_url, params=listing_post)
