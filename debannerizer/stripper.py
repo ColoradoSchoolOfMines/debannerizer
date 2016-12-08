@@ -1,5 +1,6 @@
 import requests
 import re
+import datetime
 from itertools import islice
 from bs4 import BeautifulSoup
 from collections import namedtuple
@@ -69,7 +70,7 @@ class BannerMeeting:
 
     @location.setter
     def location(self, value):
-        self.building, _, _self.room = value.rpartition(" ")
+        self.building, _, self.room = value.rpartition(" ")
 
     @property
     def timerange(self):
@@ -77,6 +78,9 @@ class BannerMeeting:
 
     @timerange.setter
     def timerange(self, value):
+        if value == 'TBA':
+            self.start_time, self.end_time = None, None
+            return
         if isinstance(value, str):
             self.start_time, self.end_time = (
                     datetime.datetime.strptime(t, "%I:%M %p").time()
@@ -91,6 +95,9 @@ class BannerMeeting:
 
     @daterange.setter
     def daterange(self, value):
+        if value == 'TBA':
+            self.start_date, self.end_date = None, None
+            return
         if isinstance(value, str):
             self.start_date, self.end_date = (
                     datetime.datetime.strptime(d, "%b %d, %Y").date()
