@@ -34,6 +34,8 @@ listing_post = {
     "term_in": "201710"
 }
 
+despacify = re.compile(r' +')
+
 BannerSection = namedtuple(
     "BannerSection",
     ["crn", "title", "subject", "number", "section", "credits", "meetings"]
@@ -50,6 +52,25 @@ class BannerMeeting:
                 ', '.join("{}={}".format(c, repr(getattr(self, c))) for c in BannerMeeting.columns)
             )
 
+    @property
+    def instructors(self):
+        return self._instructors
+
+    @instructors.setter
+    def instructors(self, value):
+        if isinstance(value, str):
+            self._instructors = despacify.sub(' ', value).replace(' (P)', '').split(',')
+        else:
+            self._instructors = value
+
+    @property
+    def location(self):
+        return self.building + " " + self.room
+
+    @location.setter
+    def location(self, value):
+        self.building, _, _self.room = value.rpartition(" ")
+
 def banner_reader(term):
     listing_post["term_in"] = term
     r = requests.post(listing_url, params=listing_post)
@@ -60,7 +81,6 @@ def banner_reader(term):
     rows = islice(soup.find(class_='pagebodydiv').table('tr', recursive=False), 1, None, 2)
     flat_title_p = re.compile(r'^(.+) - (\d+) - ([A-Z]{3,4}) (\d{3}[A-Z]?) - ([A-Z0-9]+)$')
     credits_p = re.compile(r'((?:\d+\.\d+ TO +)?\d+\.\d+) Credits')
-    despacify = re.compile(r' +')
     for t, row in zip(titles, rows):
         flat_title = t.contents[0].contents[0].replace('\r', '')
         m = flat_title_p.match(flat_title)
