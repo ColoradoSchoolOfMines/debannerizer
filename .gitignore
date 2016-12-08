@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Mac OS X shit for ariel to not coat our repo in worthless files
+.DS_Store
+
 # config
 config.yaml
 
