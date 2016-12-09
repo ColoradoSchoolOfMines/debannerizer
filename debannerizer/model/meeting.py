@@ -16,11 +16,6 @@ class Meeting(db.Base):
     loc_building = Column(String)
     loc_room = Column(String)
 
-    
-    def __repr__(self):
-        return "<meeting(id='%s', crn='%s', begin_time='%s', end_time='%s', days='%s', loc_building='%s',loc_room='%s')>"%(
-        self.id, self.crn, self.begin_time, self.end_time, self.days, self.loc_building, self.loc_room)
-
     instructors = relationship('Instructor', back_populates='meeting')
     section = relationship('Section', back_populates='meetings')
 

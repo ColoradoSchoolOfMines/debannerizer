@@ -7,6 +7,7 @@ from decimal import Decimal
 
 class Section(db.Base):
     __tablename__ = 'section'
+
     crn = Column(String, primary_key=True)
     course_id = Column(Integer, ForeignKey('course.id'), nullable=False)
     section_letter = Column(String)
@@ -15,10 +16,6 @@ class Section(db.Base):
 
     course = relationship('Course', back_populates='sections')
     meetings = relationship('Meeting', back_populates='section')
-
-    def __repr__(self):
-        return "<section(crn='%s',section='%s')>"%(
-        self.crn, self.section)
 
     @staticmethod
     def add_from_bsection(bsection):
