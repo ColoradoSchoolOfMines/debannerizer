@@ -2,6 +2,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{minted}
 \usepackage{float, graphicx}
+\usepackage{hyperref}
 \setminted{autogobble, mathescape}
 \usemintedstyle{tango}
 
@@ -108,5 +109,32 @@ The distribution of class times does not appear very Gaussian as might be expect
 
 \section{Technical Challenges}
 
-% This would be a good place to describe BeautfulSoup and SQLAlchemy Jack
+The largest challenge associated with this project was parsing the data from
+the \emph{Self Service Banner} (SSB) system. The \emph{Dynamic Schedule} page
+on SSB provides a very flat listing of all sections without authentication to
+the Mines system, which allows for easy importing. The URL to access this page
+is at:
+
+\begin{center}
+    \url{https://banner.mines.edu/prod/owa/bwckschd.p_disp_dyn_sched}
+\end{center}
+
+Parsing through this was a hot mess. Looking at the HTML output from SSB, it's
+surprising that most web browsers are even capable of properly rendering the
+page. Some of the nasties included nested HTML tables without proper closing
+tags.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{bannertbl.png}
+    \caption{Screenshot depicting the HTML structure of the page parsed}
+\end{figure}
+
+Fortunately, the \emph{Beautiful Soup 4} library for Python (in combination
+with \emph{lxml}) was able to help remove inconsistencies, like the lack of a
+proper XML structure. Through this, our data could be obtained using a simple
+pairwise iteration of the outermost even-odd HTML table rows and a few PCREs.
+
+
+
 \end{document}

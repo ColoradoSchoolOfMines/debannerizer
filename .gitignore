@@ -97,3 +97,5 @@ ENV/
 # LaTeX aux files, apparently Django uses .log too
 *.aux
 *.pdf
+*.out
+_minted*
