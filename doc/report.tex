@@ -1,6 +1,6 @@
 \documentclass[12pt,letterpaper,titlepage]{article}
 \usepackage[margin=1in]{geometry}
-\usepackage{float}
+\usepackage{float, graphicx}
 
 \title{CSCI 403 Final Project:\\
        A Better Mines Courses Database}
@@ -85,11 +85,20 @@ id & title & subject & number \\ \hline
 \caption{\label{tbl:course}Example of course relation}
 \end{table}
 
-The instructor relation, as seen in Table \ref{tbl:instructor}, is quite simple and is only composed of the instructor's name and one of the meeting\_id's associated with the meeting that the instructor teaches. Combined they serve as a primary key for the instructor table (e.g. (22, Joshua Ramsey) serves as a primary key in Table \ref{tbl:instructor}). The meeting relation, as seen in Table \ref{tbl:meeting}, stores all of the meeting specific information such as the crn associated with a certain section (foreign key constraint back to the section relation), the course's meeting location, days, times, and the dates through which the course runs. Each tuple in the meeting relation has an associated id that serves as the primary key for the relation. There are no other foreign dependencies in the meeting relation. The section relation, shown in Table \ref{tbl:section}, essentially just lists out all of the different sections associated with a certain course (using a foreign key on the course\_id attribute back to the course relation), the credit range associated with the section, and the crn of the section that acts as the primary key for the relation. Each crn is unique for a section as opposed to for a course, but a single crn can still have multiple different meeting times and locations. Finally, the course relation, shown in Table \ref{tbl:course}, gives the course id (which serves as the primary key), the course title, and the subject id and number.
+The instructor relation, as seen in Table \ref{tbl:instructor}, is quite simple and is only composed of the instructor's name and one of the meeting\_id's associated with the meeting that the instructor teaches. Combined they serve as a primary key for the instructor table (e.g. (22, Joshua Ramsey) serves as a primary key in Table \ref{tbl:instructor}). The instructor table is essentially a cross-reference table since the instructor meeting relationship is a many-to-many relationship (N to M). This is because a single instructor can instruct many meetings and a single meeting can have multiple instructors. The meeting relation, as seen in Table \ref{tbl:meeting}, stores all of the meeting specific information such as the crn associated with a certain section (foreign key constraint back to the section relation), the course's meeting location, days, times, and the dates through which the course runs. Each tuple in the meeting relation has an associated id that serves as the primary key for the relation. There are no other foreign dependencies in the meeting relation. The section relation, shown in Table \ref{tbl:section}, essentially just lists out all of the different sections associated with a certain course (using a foreign key on the course\_id attribute back to the course relation), the credit range associated with the section, and the crn of the section that acts as the primary key for the relation. Each crn is unique for a section as opposed to for a course, but a single crn can still have multiple different meeting times and locations. Finally, the course relation, shown in Table \ref{tbl:course}, gives the course id (which serves as the primary key), the course title, and the subject id and number.
 
 % Interesting things about dataset, where it was obtained, licensing (lol)
 % Description of tables
 \section{Cool Things}
+After setting up the relations on CPW's database it was possible to perform some interesting queries on the data. The first thing that was investigated was the course distribution as a function of start time throughout the day shown in Figure \ref{fig:starthours}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = 4 in]{classmeetinghist.png}
+\caption{\label{fig:starthours}Plot of the number of course meetings on campus as function start time}
+\end{figure}
+
+The distribution of class times does not appear very Gaussian as might be expected, however there are clearly more meeting times from 8-3 than in the very early morning or late in the afternoon. The most popular time of day to take a class is at 2 and there also appears to be a somewhat strange drop in meeting times from 10-11. 
 
 % Need ideas for this section, currently have...
 % Explosion of Computer Science Popularity
