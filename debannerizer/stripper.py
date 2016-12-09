@@ -119,6 +119,8 @@ def banner_reader(term):
     for t, row in zip(titles, rows):
         flat_title = t.contents[0].contents[0].replace('\r', '')
         m = flat_title_p.match(flat_title)
+        if not m:
+            continue
         title, crn, subject, number, letter = m.groups()
         m = credits_p.search(str(row.td))
         credits = despacify.sub(' ', m.group(1)) if m else ''
