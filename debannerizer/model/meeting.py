@@ -13,20 +13,15 @@ class Meeting(db.Base):
     days = Column(String)
     begin_date = Column(Date)
     end_date = Column(Date)
-<<<<<<< HEAD
-    loc_building = Column(String, nullable=False)
-    loc_room = Column(String, nullable=False)
     type = Column(String, nullable=False)
     schtype = Column(String, nullable=False)
+    loc_building = Column(String)
+    loc_room = Column(String)
 
     
     def __repr__(self):
         return "<meeting(id='%s', crn='%s', begin_time='%s', end_time='%s', days='%s', loc_building='%s',loc_room='%s')>"%(
         self.id, self.crn, self.begin_time, self.end_time, self.days, self.loc_building, self.loc_room)
-=======
-    loc_building = Column(String)
-    loc_room = Column(String)
->>>>>>> 2a0a1dcb593c6380db9210b0329445a433fc0bd3
 
     instructors = relationship('Instructor', back_populates='meeting')
     section = relationship('Section', back_populates='meetings')
