@@ -13,8 +13,6 @@ class Meeting(db.Base):
     days = Column(String)
     begin_date = Column(Date)
     end_date = Column(Date)
-    type = Column(String, nullable=False)
-    schtype = Column(String, nullable=False)
     loc_building = Column(String)
     loc_room = Column(String)
 
