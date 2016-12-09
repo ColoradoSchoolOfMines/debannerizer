@@ -93,3 +93,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# LaTeX aux files, apparently Django uses .log too
+*.aux
