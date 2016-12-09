@@ -8,7 +8,7 @@ class Instructor(db.Base):
     name = Column(String, nullable=False)
     
     def __repr__(self):
-        return "<section(id='%s', name='%s')>"%(
+        return "<instructor(id='%s', name='%s')>"%(
         self.id, self.name)
 
 Instructor.metadata.create_all(db.engine)
