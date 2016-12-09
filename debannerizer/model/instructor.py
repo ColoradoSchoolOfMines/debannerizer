@@ -9,5 +9,3 @@ class Instructor(db.Base):
     name = Column(String, primary_key=True)
 
     meeting = relationship('Meeting', back_populates='instructors')
-
-Instructor.metadata.create_all(db.engine)
