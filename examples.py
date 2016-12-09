@@ -8,4 +8,9 @@ for instructor in db.session.query(Instructor)\
     course = instructor.meeting.section.course
     print("{}-{}: {}".format(course.subject, course.number, course.title))
 
-# TODO: More examples?
+print("All the courses that TBA teaches...")
+for instructor in db.session.query(Instructor)\
+        .filter(Instructor.name == 'TBA')\
+        .all():
+    course = instructor.meeting.section.course
+    print("{}-{}: {}".format(course.subject, course.number, course.title))
