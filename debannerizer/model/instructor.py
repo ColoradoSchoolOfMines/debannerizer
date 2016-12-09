@@ -1,14 +1,11 @@
 from debannerizer import db
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 class Instructor(db.Base):
     __tablename__ = 'instructor'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
-    
-    def __repr__(self):
-        return "<instructor(id='%s', name='%s')>"%(
-        self.id, self.name)
+    meeting_id = Column(Integer, ForeignKey('meeting.id'), primary_key=True)
+    name = Column(String, primary_key=True)
 
-Instructor.metadata.create_all(db.engine)
+    meeting = relationship('Meeting', back_populates='instructors')
