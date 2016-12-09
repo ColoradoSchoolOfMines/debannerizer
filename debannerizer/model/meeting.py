@@ -14,6 +14,9 @@ class Meeting(db.Base):
     end_date = Column(Date)
     loc_building = Column(String, nullable=False)
     loc_room = Column(String, nullable=False)
+    type = Column(String, nullable=False)
+    schtype = Column(String, nullable=False)
+
     
     def __repr__(self):
         return "<meeting(id='%s', crn='%s', begin_time='%s', end_time='%s', days='%s', loc_building='%s',loc_room='%s')>"%(
