@@ -2,7 +2,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{float}
 
-\title{CSCI 403 Final Project:
+\title{CSCI 403 Final Project:\\
        A Better Mines Courses Database}
 \date{\today}
 \author{Jack Rosenthal, Ariel Shlosberg, Nicholas Lantz\\
@@ -14,7 +14,7 @@
 \maketitle
 
 \section{The Data Set}
-The data set that was used for this project was course information obtained by parsing the HTML on banner.mines.edu. This is very similar to the course information that was presented to us in CPW's database, however we gain the advantage of being able to select the course information from any available previous term or even next semester's course information. This is an interesting data set as it allows us to look for historical trends in Mines courses over the yeas as well as to try to find interesting correlations and statistics about the classes next semester. The data is initially very flat as presented in banner and separates each course section into a separate object. This means that the first step of working with the data and importing it into the database was to determine the best way to represent the data set in a normalized format. We decided to break our data into four separate tables representing the different major components in describing a course (instructor, course, section, and meeting). This allowed us to effectively normalize the database using BCNF as was shown in class. Each table has corresponding attributes that are necessary to describing the entity, but the overall structure is such that data redundancy is minimized and data integrity is preserved. An example of each of the relations is presented below in Figure \ref{tbl:instructor} through Figure \ref{tbl:course}.
+The data set that was used for this project was course information obtained by parsing the HTML on banner.mines.edu. This is very similar to the course information that was presented to us in CPW's database, however we gain the advantage of being able to select the course information from any available previous term or even next semester's course information. This is an interesting data set as it allows us to look for historical trends in Mines courses over the years as well as to try to find interesting correlations and statistics about the classes next semester. The data is initially very flat as presented in banner and separates each course section into a separate object. This means that the first step of working with the data and importing it into the database was to determine the best way to represent the data set in a normalized format. We decided to break our data into four separate tables representing the different major components in describing a course (instructor, course, section, and meeting). This allowed us to effectively normalize the database using BCNF as was shown in class. Each table has corresponding attributes that are necessary to describing the entity, but the overall structure is such that data redundancy is minimized and data integrity is preserved. An example of each of the relations is presented below in Figure \ref{tbl:instructor} through Figure \ref{tbl:course}.
 
 \begin{table}[H]
 \centering
@@ -34,18 +34,19 @@ meeting\_id & name \\ \hline
 \end{table}
 
 \begin{table}[H]
+\footnotesize
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
 id & crn & begin\_time & end\_time & days & begin\_date & end\_date & loc\_building & loc\_room \\ \hline
-22 & 12685 & 08:00:00 & 09:50:00 & MWF & 2017-01-10 & 2017-05-12 & Alderson Hall & 291 \\ \hline
-23 & 12686 & 10:00:00 & 11:50:00 & MWF & 2017-01-10 & 2017-05-12 & Alderson Hall & 291 \\ \hline
-24 & 12687 & 14:00:00 & 16:45:00 & TR & 2017-01-10 & 2017-05-12 & Alderson Hall & 291 \\ \hline
-25 & 12314 & 07:30:00 & 08:45:00 & MW & 2017-01-10 & 2017-05-12 & Alderson Hall & 230 \\ \hline
-26 & 12316 & 09:00:00 & 09:50:00 & MWF & 2017-01-10 & 2017-05-12 & Alderson Hall & 230 \\ \hline
-27 & 11084 & 11:00:00 & 11:50:00 & MWF & 2017-01-10 & 2017-05-12 & Brown Building & W250 \\ \hline
-28 & 11085 & 08:00:00 & 09:15:00 & T & 2017-01-10 & 2017-05-12 & Alderson Hall & 162 \\ \hline
-29 & 11086 & 09:30:00 & 10:45:00 & T & 2017-01-10 & 2017-05-12 & Alderson Hall & 162 \\ \hline
+22 & 12685 & 08:00 & 09:50 & MWF & 2017-01-10 & 2017-05-12 & Alderson Hall & 291 \\ \hline
+23 & 12686 & 10:00 & 11:50 & MWF & 2017-01-10 & 2017-05-12 & Alderson Hall & 291 \\ \hline
+24 & 12687 & 14:00 & 16:45 & TR & 2017-01-10 & 2017-05-12 & Alderson Hall & 291 \\ \hline
+25 & 12314 & 07:30 & 08:45 & MW & 2017-01-10 & 2017-05-12 & Alderson Hall & 230 \\ \hline
+26 & 12316 & 09:00 & 09:50 & MWF & 2017-01-10 & 2017-05-12 & Alderson Hall & 230 \\ \hline
+27 & 11084 & 11:00 & 11:50 & MWF & 2017-01-10 & 2017-05-12 & Brown Building & W250 \\ \hline
+28 & 11085 & 08:00 & 09:15 & T & 2017-01-10 & 2017-05-12 & Alderson Hall & 162 \\ \hline
+29 & 11086 & 09:30 & 10:45 & T & 2017-01-10 & 2017-05-12 & Alderson Hall & 162 \\ \hline
 \end{tabular}
 \caption{\label{tbl:meeting} Example of meeting relation}
 \end{table}
