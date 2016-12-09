@@ -39,7 +39,7 @@ despacify = re.compile(r' +')
 
 BannerSection = namedtuple(
     "BannerSection",
-    ["crn", "title", "subject", "number", "section", "credits", "meetings"]
+    ["crn", "title", "subject", "number", "letter", "credits", "meetings"]
 )
 
 class BannerMeeting:
@@ -60,7 +60,7 @@ class BannerMeeting:
     @instructors.setter
     def instructors(self, value):
         if isinstance(value, str):
-            self._instructors = despacify.sub(' ', value).replace(' (P)', '').split(',')
+            self._instructors = despacify.sub(' ', value).replace(' (P)', '').split(', ')
         else:
             self._instructors = value
 
@@ -119,11 +119,11 @@ def banner_reader(term):
     for t, row in zip(titles, rows):
         flat_title = t.contents[0].contents[0].replace('\r', '')
         m = flat_title_p.match(flat_title)
-        title, crn, subject, number, section = m.groups()
+        title, crn, subject, number, letter = m.groups()
         m = credits_p.search(str(row.td))
         credits = despacify.sub(' ', m.group(1)) if m else ''
         if row.td.table:
             meetings = [BannerMeeting(mtgrow) for mtgrow in islice(row.td.table('tr'), 1, None)]
         else:
             meetings = []
-        yield BannerSection(crn, title, subject, number, section, credits, meetings)
+        yield BannerSection(crn, title, subject, number, letter, credits, meetings)

@@ -1,16 +1,47 @@
 from debannerizer import db
-from sqlalchemy import Column, Integer, String
+from debannerizer.model.meeting import Meeting
+from debannerizer.model.course import Course
+from sqlalchemy import Column, Integer, String, ForeignKey, Numeric
+from sqlalchemy.orm import relationship
+from decimal import Decimal
 
 class Section(db.Base):
     __tablename__ = 'section'
 
     crn = Column(String, primary_key=True)
-    section = Column(String, nullable = False)
-    type = Column(String, nullable=False)
-    section_type = Column(String, nullable=False)
-    
-    def __repr__(self):
-        return "<section(id='%s', crn='%s', type='%s', section_type='%s')>"%(
-        self.id, self.crn, self.type, self.section_type)
+    course_id = Column(Integer, ForeignKey('course.id'), nullable=False)
+    section_letter = Column(String)
+    min_credits = Column(Numeric(precision=5, scale=3))
+    max_credits = Column(Numeric(precision=5, scale=3))
 
-Section.metadata.create_all(db.engine)
+    course = relationship('Course', back_populates='sections')
+    meetings = relationship('Meeting', back_populates='section')
+
+    @staticmethod
+    def add_from_bsection(bsection):
+        if ' TO ' in bsection.credits:
+            min_credits, _, max_credits = bsection.credits.partition(' TO ')
+        else:
+            min_credits, max_credits = [bsection.credits] * 2
+
+        crse = db.session.query(Course)\
+                .filter(Course.subject == bsection.subject)\
+                .filter(Course.number == bsection.number).first()
+        if not crse:
+            crse = Course(
+                    title=bsection.title,
+                    subject=bsection.subject,
+                    number=bsection.number)
+            db.session.add(crse)
+            db.session.flush()
+
+        db.session.add(Section(
+                crn=bsection.crn,
+                course_id=crse.id,
+                section_letter=bsection.letter,
+                min_credits=min_credits,
+                max_credits=max_credits
+            ))
+
+        for m in bsection.meetings:
+            Meeting.add_from_bmeeting(crn=bsection.crn, bmeeting=m)
