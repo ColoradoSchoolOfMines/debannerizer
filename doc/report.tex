@@ -104,8 +104,136 @@ After setting up the relations on CPW's database it was possible to perform some
 
 The distribution of class times does not appear very Gaussian as might be expected, however there are clearly more meeting times from 8-3 than in the very early morning or late in the afternoon. The most popular time of day to take a class is at 2 and there also appears to be a somewhat strange drop in meeting times from 10-11. 
 
-% Need ideas for this section, currently have...
-% Explosion of Computer Science Popularity
+You can also answer a few questions pretty easily with our dataset. Here's a
+few of those questions:
+
+\begin{enumerate}
+    \item
+        How many lectures are in Brown Building on Mondays, Wednesdays and
+        Fridays? (Figure \ref{lst:lecinbrown}, Table \ref{tbl:lecinbrown})
+
+        \begin{figure}[H]
+            \centering
+            \begin{minted}{Python3}
+                brown_rooms = {}
+                for meeting in db.session.query(Meeting)\
+                        .filter(Meeting.loc_building == 'Brown Building')\
+                        .filter(Meeting.days == 'MWF')\
+                        .all():
+                    if meeting.loc_room in brown_rooms:
+                        brown_rooms[meeting.loc_room] += 1
+                    else:
+                        brown_rooms[meeting.loc_room] = 1
+
+                for key, val in sorted(brown_rooms.items(),
+                                       key=lambda item: item[1],
+                                       reverse=True):
+                    print('{}: {}'.format(key, val))
+            \end{minted}
+            \caption{\label{lst:lecinbrown}Python code to get the
+                     number of lectures in each room of Brown Building}
+        \end{figure}
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|}
+                \hline
+                Room Number & count \\
+                \hline
+                W250        &     8 \\
+                W210        &     8 \\
+                W280        &     7 \\
+                269         &     4 \\
+                W375        &     3 \\
+                316B        &     1 \\
+                125         &     1 \\
+                \hline
+            \end{tabular}
+            \caption{\label{tbl:lecinbrown}Results of the query in Figure
+                    \ref{lst:lecinbrown}.}
+        \end{table}
+    \item
+        Which department teaches the most sections?
+
+        \begin{figure}[H]
+            \centering
+            \begin{minted}{Python3}
+                num_sections_taught = {}
+                for section in db.session.query(Section).all():
+                    if section.course.subject in num_sections_taught:
+                        num_sections_taught[section.course.subject] += 1
+                    else:
+                        num_sections_taught[section.course.subject] = 1
+
+                for key, val in sorted(num_sections_taught.items(),
+                                       key=lamdbda item: item[1],
+                                       reverse=True):
+                    print('{}: {}'.format(key, val))
+            \end{minted}
+            \caption{\label{lst:numdepartmentcourses}Python code to retrieve
+                     the number of sections taught by each department.}
+        \end{figure}
+
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|}
+                \hline
+                Department & Number of Sections Taught\\
+                \hline
+                PHGN & 134 \\
+                MEGN & 114 \\
+                MATH & 107 \\
+                MTGN & 100 \\
+                CEEN & 89  \\
+                \hline
+            \end{tabular}
+            \caption{\label{tbl:numdepartmentcourses}The result of the query
+                     from Figure \ref{lst:numdepartmentcourses} (Top 5 shown)}
+        \end{table}
+    \item
+        Instructors who teach computer science courses?
+
+        \begin{figure}[H]
+            \centering
+            \begin{minted}{Python3}
+                instructors = set()
+                for course in db.session.query(Course)\
+                        .filter(Course.subject == 'CSCI')\
+                        .all():
+                    for section in course.sections:
+                        for meeting in section.meetings:
+                            for instructor in meeting.instructors:
+                                instructors.add(instructor.name)
+                print(instructors)
+            \end{minted}
+            \caption{\label{lst:csciprofessors}Python code to retrieve all
+                     instructors who teach computer science sections}
+        \end{figure}
+        \begin{figure}
+            \{Bo Wu, Brandon R. Rodriguez, Christopher Robert Painter-Wakefield,
+            Christopher Travis Johnson, Chuan Yue, Cynthia A. Rader, Dejun Yang,
+            Dinesh Prakash Mehta, Hao Zhang, Hua Wang, Jeffrey R Paone,
+            Jesse P. Weaver, Kento Okamoto, Levente Sipeki, Mahadevan Ganesh,
+            Mark Lewis Baldwin, Mark W. Coffey, Michelle Anne Konopka, Qi Han,
+            Ryan Blake Jackson, TBA, Tracy K Camp, Wendy Denise Fisher,
+            William A. Hoff\}
+            \caption{\label{fig:csciprofessors}The result fo the query from
+                     Figure \ref{lst:csciprofessors} (All shown)}
+        \end{figure}
+
+    \item
+        Sections taught by CPW next term?
+
+        \begin{figure}[H]
+            \centering
+            \begin{minted}{Python3}
+            \end{minted}
+        \end{figure}
+
+        \begin{table}
+            \
+        \end{table}
+\end{enumerate}
 
 \section{Technical Challenges}
 
