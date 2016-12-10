@@ -6,6 +6,9 @@
 \setminted{autogobble, mathescape}
 \usemintedstyle{tango}
 
+\usepackage{pgfplots}
+\pgfplotsset{width=\linewidth,compat=newest}
+
 \title{CSCI 403 Final Project:\\
        A Better Mines Courses Database}
 \date{\today}
@@ -215,25 +218,34 @@ few of those questions:
             Dinesh Prakash Mehta, Hao Zhang, Hua Wang, Jeffrey R Paone,
             Jesse P. Weaver, Kento Okamoto, Levente Sipeki, Mahadevan Ganesh,
             Mark Lewis Baldwin, Mark W. Coffey, Michelle Anne Konopka, Qi Han,
-            Ryan Blake Jackson, TBA, Tracy K Camp, Wendy Denise Fisher,
+            Ryan Blake Jackson, Tracy K Camp, Wendy Denise Fisher,
             William A. Hoff\}
             \caption{\label{fig:csciprofessors}The result fo the query from
                      Figure \ref{lst:csciprofessors} (All shown)}
         \end{figure}
 
-    \item
-        Sections taught by CPW next term?
-
-        \begin{figure}[H]
-            \centering
-            \begin{minted}{Python3}
-            \end{minted}
-        \end{figure}
-
-        \begin{table}
-            \
-        \end{table}
 \end{enumerate}
+
+\clearpage
+
+We can also do an analysis of percentage of undergraduate sections taught of
+computer science courses.
+
+\begin{tikzpicture}
+    \begin{axis}[
+            title=\textbf{CS Courses (by term)},
+                    xlabel={Term},
+                    ylabel={Frequency},
+                    xticklabels from table={csci_time_analysis.csv}{[index]0},
+                    xtick=data,
+                ]
+                \addplot+ table [x expr=\coordindex, y]
+                {csci_time_analysis.csv};
+
+    \end{axis}
+\end{tikzpicture}
+
+\clearpage
 
 \section{Technical Challenges}
 
@@ -262,7 +274,5 @@ Fortunately, the \emph{Beautiful Soup 4} library for Python (in combination
 with \emph{lxml}) was able to help remove inconsistencies, like the lack of a
 proper XML structure. Through this, our data could be obtained using a simple
 pairwise iteration of the outermost even-odd HTML table rows and a few PCREs.
-
-
 
 \end{document}
