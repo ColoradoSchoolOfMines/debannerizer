@@ -1,6 +1,7 @@
 import requests
 import re
 import datetime
+import sys
 from itertools import islice
 from bs4 import BeautifulSoup
 from collections import namedtuple
@@ -108,6 +109,7 @@ class BannerMeeting:
 
 def banner_reader(term):
     listing_post["term_in"] = term
+    print("Downloading from SSB, this will be a bit...", file=sys.stderr)
     r = requests.post(listing_url, params=listing_post)
     if not r.ok:
         raise RuntimeError("Unable to download page from banner")
