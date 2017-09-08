@@ -25,7 +25,7 @@ def frequency_analysis(subject):
     return counts[subject] / sum(counts.values())
 
 if __name__ == '__main__':
-    for term in term_range(*sys.argv):
+    for term in term_range(*sys.argv[1:]):
         import_term(term)
         db.session.commit()
         print("{},{}".format(term, frequency_analysis("CSCI")))
