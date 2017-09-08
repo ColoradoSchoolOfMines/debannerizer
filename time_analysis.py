@@ -1,6 +1,7 @@
 # this just goes to show how cool our data set can be
 # this is to analyse the growth in pecentage of CS courses over time
 
+import sys
 from collections import defaultdict
 from debannerizer import db
 from debannerizer.importer import import_term
@@ -24,7 +25,7 @@ def frequency_analysis(subject):
     return counts[subject] / sum(counts.values())
 
 if __name__ == '__main__':
-    for term in term_range('201080', '201710'):
+    for term in term_range(*sys.argv):
         import_term(term)
         db.session.commit()
         print("{},{}".format(term, frequency_analysis("CSCI")))
